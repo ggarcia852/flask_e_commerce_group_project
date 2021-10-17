@@ -137,11 +137,11 @@ def add_item(item_id):
 
 
     
-@app.route('/cart')
+@app.route('/cart', methods=["GET", "POST"] )
 @login_required
 def cart():
     # items = current_user.items
-    items = Cart.query.all()
+    items = Item.query.join(Cart).add_columns(Item.color, Item.skill, Item.image, Item.skill, Cart.price).all()
     return render_template('cart.html', items=items)
 
 
