@@ -2,16 +2,24 @@
 
 {% block content %}
 
+<h2>Items in your cart:</h2>
+<h4>Cart Total: ${{ subtotal }} </h4>
+<a href="rangers">Continue Shopping</a> 
+<br>
+
+
+
+
+
+<br><br><br>
 
 
 {% for item in items %} 
 
-
-
 <div class="card" style="width: 18rem;">
-	<img class="card-img-top" src="{{ item.image }}" alt="Card image cap">
+	<img class="card-img-top" src="{{ item.item.image }}" alt="Card image cap">
 	<div class="card-body bg-white">
-		<h5 class="card-title text-dark">{{ item.color }}<br> {{ item.skill }} <br> ${{ item.price }}</h5>
+		<h5 class="card-title text-dark">{{ item.item.color }}<br> {{ item.item.skill }} <br> ${{ item.price }}</h5>
 		<p class="card-text text-secondary"> {{ item.description }} </p>
 
 
@@ -26,13 +34,13 @@
 	<!-- Modal -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content ">
 				<div class="modal-header">
-					<h5 class="modal-title" id="deleteModalLabel">{{ item.color }}</h5>
+					<h5 class="modal-title text-dark" id="deleteModalLabel">Remove {{ item.item.color }}</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body text-dark">
-					Are you sure you would like to delete {{ item.color }} from your cart? 
+					Are you sure you would like to delete {{ item.item.color }} from your cart? 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -47,6 +55,35 @@
 	
 {% endfor %}
 
+
+
+
+{#
+
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+	Remove All Items
+</button><br>
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content ">
+			<div class="modal-header">
+				<h5 class="modal-title text-dark" id="deleteModalLabel">Remove All Items from Cart</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-dark">
+				Are you sure you would like to remove all the items from your cart? 
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<form action="{{ url_for('remove_all') }}"  method="post">
+					<input type="submit" class="btn btn-danger" value="Yes I'm Sure">
+				</form>   
+			</div>
+		</div>
+	</div>   
+	</div>
+#}
 
 {% endblock %}
 

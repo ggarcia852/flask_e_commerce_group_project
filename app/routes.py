@@ -127,29 +127,58 @@ def ranger_detail(item_id):
 @app.route('/ranger_detail/<item_id>/add', methods=['POST'])
 @login_required
 def add_item(item_id):
+    #my_cart = current_user(Cart)
     item = Item.query.get_or_404(item_id)
 
     new_cart = Cart(current_user.id, item_id, item.price)
     db.session.add(new_cart)
     db.session.commit()
-    flash (f'You have succesfully added {item.color} to your cart!')
+    flash (f'You have succesfully added {item.color} to your cart!', 'success')
     return redirect(url_for('cart', item=item))
 
 
     
-@app.route('/cart', methods=["GET", "POST"] )
+@app.route('/cart', methods =["GET"] )
 @login_required
 def cart():
-    items = Item.query.join(Cart).add_columns(Item.color, Item.skill, Item.image, Item.skill, Cart.price).all()
-    return render_template('cart.html', items=items)
-
-
-
-@app.route('/cart/remove_item/<item_id>', methods=['POST'])
-def remove_item(item_id):
-        item = Cart.query.get_or_404(item_id)
+    items = Cart.query.filter_by(cart_id=current_user.id)
+   # items = Cart.query.filter_by(cart_id)
     
-        db.session.delete(item)
+    
+
+    subtotal = 0
+    for item in items:
+        subtotal += item.price 
+    
+    return render_template('cart.html', items=items, subtotal=subtotal)
+
+
+
+@app.route('/remove_item/<item_id>', methods=['POST'])
+def remove_item(item_id):
+        item_to_remove = Cart.query.get_or_404(item_id)
+    
+        db.session.delete(item_to_remove)
         db.session.commit()
-        flash('Your item has been removed from your cart.', 'success')
+        flash('Your item has been removed.', 'success')
         return redirect(url_for('cart'))
+
+
+@app.route('/remove_all', methods=['DELETE'])
+def remove_all():
+    items = Cart.query.filter_by(cart_id=current_user.id)
+
+    db.session.query(Cart).delete()
+    db.session.commit()
+
+    # for item in items:
+    #     db.session.delete(item)
+    #     db.session.commit()
+    #     flash ('You have removed all the items from your cart.', 'success')
+    #     return redirect(url_for('cart', items=items))
+
+
+# @app.route('/remove_all', methods=['DELETE'])
+# def remove_all():
+#     db.session.query(Cart).delete()
+    
