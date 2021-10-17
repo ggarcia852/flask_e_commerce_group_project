@@ -132,7 +132,7 @@ def add_item(item_id):
     new_cart = Cart(current_user.id, item_id, item.price)
     db.session.add(new_cart)
     db.session.commit()
-    
+    flash (f'You have succesfully added {item.color} to your cart!')
     return redirect(url_for('cart', item=item))
 
 
@@ -140,7 +140,6 @@ def add_item(item_id):
 @app.route('/cart', methods=["GET", "POST"] )
 @login_required
 def cart():
-    # items = current_user.items
     items = Item.query.join(Cart).add_columns(Item.color, Item.skill, Item.image, Item.skill, Cart.price).all()
     return render_template('cart.html', items=items)
 
@@ -148,10 +147,9 @@ def cart():
 
 @app.route('/cart/remove_item/<item_id>', methods=['POST'])
 def remove_item(item_id):
-    if current_user:
         item = Cart.query.get_or_404(item_id)
     
         db.session.delete(item)
         db.session.commit()
-
+        flash('Your item has been removed from your cart.', 'success')
         return redirect(url_for('cart'))

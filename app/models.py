@@ -30,7 +30,7 @@ class Item(db.Model):
     skill= db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     image= db.Column(db.String(255), nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
     order =db.relationship('Cart', backref='item', lazy=True)
     
 

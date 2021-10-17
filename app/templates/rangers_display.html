@@ -19,11 +19,12 @@
             <img class="card-img-top" src="{{ r.image }}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title text-dark">{{ r.color }} <br> {{ r.skill }} <br></h5>
-                <p class="card-text text-secondary">{{ r.price }} </p>
+                <p class="card-text text-secondary">${{ r.price }} </p>
                 
             </div>
             <div class="card-body">
-                <a href="{{ url_for('ranger_detail',  item_id=r.id) }}" class="card-link">View Item</a> 
+               
+                <a href="{{ url_for('ranger_detail',  item_id=r.id) }}" class="card-link btn btn-primary">View Item</a> 
             </div>      
         </div>
         <br>
