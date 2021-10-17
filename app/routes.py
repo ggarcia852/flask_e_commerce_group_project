@@ -12,12 +12,14 @@ def index():
     return render_template('index.html', title=title )
 
 
+
 @app.route('/my_account') 
 @login_required 
 def my_account():     
     title = 'My Account'
 
     return render_template('my_account.html', title=title)
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -77,11 +79,11 @@ def login():
     return render_template('login.html', title=title, login_form=form)
 
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
 
 
 
@@ -105,71 +107,50 @@ def addranger():
     return render_template('add_ranger.html', form=ranger)
 
 
+
 @app.route('/rangers')
 def rangers():
+    title = 'The Power Pogrammers'
     rangers = Item.query.all()
-    return render_template('rangers_display.html', rangers=rangers)
+    return render_template('rangers_display.html', rangers=rangers, title=title)
 
-@app.route('/rangers/<item_id>')
-def view_ranger(item_id):
-    ranger = Item.query.get_or_404(item_id)
 
-    # form = AddItem()
-
-    return render_template('view_ranger.html', ranger=ranger)
 
 @app.route('/ranger_detail/<item_id>')
 def ranger_detail(item_id):
+    title = 'Programmer Product Page'
     ranger = Item.query.get_or_404(item_id)
-    return render_template('view_ranger.html', ranger=ranger)
+    return render_template('view_ranger.html', ranger=ranger, title=title)
 
 
-def cart():
-    items = []
-    total_hours = 0
-    grand_total = 0
-    index = 0
 
-    for item in session['cart']:
-        item = Item.query.filter_by(id=item['id']).first()
-
-        hours = int(item['hours'])
-        total = hours * item.price
-        grand_total += total
-
-        total_hours += hours
-
-        items.append({'id': item.id, 'color': item.color, 'skill': item.skill, 'description': item.description, 'image': item.image, 'price': item.price, 'hours': hours, 'total': total, 'index': index })
-        index += 1
-    
-    return items, grand_total, total_hours
-
-   
-@app.route('/additem', methods=['POST'])
+@app.route('/ranger_detail/<item_id>/add', methods=['POST'])
 @login_required
-def add_item():
+def add_item(item_id):
+    item = Item.query.get_or_404(item_id)
 
-    if 'cart' not in session:
-        session['cart'] = []
+    new_cart = Cart(current_user.id, item_id, item.price)
+    db.session.add(new_cart)
+    db.session.commit()
+    
+    return redirect(url_for('cart', item=item))
 
-    form = AddItem()
-
-    if form.validate_on_submit():
-        
-        session['cart'].append({'id': form.id.data, 'hours': form.hours.data})
-        
-    return redirect(url_for('index'))
 
     
 @app.route('/cart')
 @login_required
 def cart():
-    items, grand_total, total_hours = cart()   #tty query
-    return render_template('cart.html', items=items, grand_total=grand_total, total_hours=total_hours)
+    # items = current_user.items
+    items = Cart.query.all()
+    return render_template('cart.html', items=items)
 
-@app.route('/remove-from-cart/<index>')
-def remove_from_cart(index):
 
-    del session['cart'][int(index)]
+
+@app.route('/cart/remove_item/<item_id>', methods=['POST'])
+def remove_item(item_id):
+    item = Cart.query.get_or_404(item_id)
+    
+    db.session.delete(item)
+    db.session.commit()
 
     return redirect(url_for('cart'))

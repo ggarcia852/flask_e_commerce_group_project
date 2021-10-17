@@ -3,7 +3,7 @@
 
 {% block content %}
 
-
+<h1>{{ ranger.color }}</h1>
 <div class="card" style="width: 16rem;">
     <img class="card-img-top" src="{{ ranger.image }}" alt="Card image cap">
     <div class="card-body">
@@ -11,7 +11,33 @@
         <p class="card-text text-dark"> {{ ranger.description }} <br><br> </p>
     </div>
     <div class="card-body">
-     <a href="/cart" class="card-link">Add to Cart</a> 
+
+        
+        <!-- Modal -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cartModal">
+            Add to Cart
+        </button>
+        
+        
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content text-dark">
+                <div class="modal-header">
+                <h5 class="modal-title" id="cartModalLabel">{{ ranger.price }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                You are adding {{ ranger.color }} to your cart.
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ url_for('add_item', item_id=ranger.id) }}" method="post">
+                    <input type="submit" class="btn btn-success" value="Let's Get Programming!">
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 </div>
 

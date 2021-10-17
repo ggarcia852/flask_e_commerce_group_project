@@ -46,5 +46,11 @@ class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cart_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
-    hours = db.Column(db.Integer)
+    price = db.Column(db.Integer)
+
+    def __init__(self, cart_id, item_id, price):
+        self.cart_id = cart_id
+        self.item_id = item_id
+        self.price = price
+
     
