@@ -7,7 +7,7 @@
 <div class="card" style="width: 16rem;">
     <img class="card-img-top" src="{{ ranger.image }}" alt="Card image cap">
     <div class="card-body">
-        <h5 class="card-title text-dark">{{ ranger.color }} <br> {{ ranger.skill }} <br> {{ ranger.price }}</h5>
+        <h5 class="card-title text-dark">{{ ranger.color }} <br> {{ ranger.skill }} <br> ${{ ranger.price }}</h5>
         <p class="card-text text-dark"> {{ ranger.description }} <br><br> </p>
     </div>
     <div class="card-body">
@@ -23,7 +23,7 @@
             <div class="modal-dialog">
             <div class="modal-content text-dark">
                 <div class="modal-header">
-                <h5 class="modal-title" id="cartModalLabel">{{ ranger.price }}</h5>
+                <h5 class="modal-title" id="cartModalLabel">${{ ranger.price }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

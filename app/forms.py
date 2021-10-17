@@ -11,10 +11,6 @@ class UserInfoForm(FlaskForm):
     submit = SubmitField('Register')
 
 
-class AddItem(FlaskForm):
-    hours = IntegerField('Hours')
-    # submit = SubmitField('Submit')
-
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

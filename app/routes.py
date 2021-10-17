@@ -1,7 +1,7 @@
 from app import app, db
-from flask import render_template, redirect, url_for, flash, session
+from flask import render_template, redirect, url_for, flash
 from flask_login import login_user ,logout_user, current_user, login_required
-from app.forms import AddItem, Ranger, UserInfoForm, LoginForm
+from app.forms import Ranger, UserInfoForm, LoginForm
 from app.models import User, Item, Cart
 
 
@@ -140,17 +140,18 @@ def add_item(item_id):
 @app.route('/cart')
 @login_required
 def cart():
-    # items = current_user.items
     items = Cart.query.all()
+
     return render_template('cart.html', items=items)
 
 
 
 @app.route('/cart/remove_item/<item_id>', methods=['POST'])
 def remove_item(item_id):
-    item = Cart.query.get_or_404(item_id)
+    if current_user:
+        item = Cart.query.get_or_404(item_id)
     
-    db.session.delete(item)
-    db.session.commit()
+        db.session.delete(item)
+        db.session.commit()
 
-    return redirect(url_for('cart'))
+        return redirect(url_for('cart'))
