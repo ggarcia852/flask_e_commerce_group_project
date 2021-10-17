@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h4>Add Ranger:</h4>
+<form action="" method='post'>
+    {{ form.csrf_token }}
+    <div class="form-group">
+        <fieldset>
+            {{ form.color.label }}
+            {{ form.color(class='form-control', placeholder='Color') }}
+        </fieldset>
+        <br>
+        <fieldset>
+            {{ form.skill.label }}
+            {{ form.skill(class='form-control', placeholder='Skill') }}
+        </fieldset>
+        <br>
+        <fieldset>
+            {{ form.description.label }}
+            {{ form.description(class='form-control', placeholder='Description') }}
+        </fieldset>
+        <br>
+        <fieldset>
+            {{ form.image.label }}
+            {{ form.image(class='form-control', placeholder='Image url') }}
+        </fieldset>
+        <fieldset>
+            {{ form.price.label }}
+            {{ form.price(class='form-control', placeholder='Price') }}
+        </fieldset>
+        <br>
+        {{ form.submit(class='btn btn-secondary') }}
+    </div>
+</form>
+
+
+{% endblock %}

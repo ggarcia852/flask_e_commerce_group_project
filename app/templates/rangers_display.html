@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="container mt-3">
+    <div class="row">
+        <h1>The Power Programmers</h1>
+        
+    </div>
+</div>
+
+
+<div class="row">
+    {% for r in rangers %} 
+    <div class="card" style="width: 16rem;">
+        <img class="card-img-top" src="{{ r.image }}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title text-dark">{{ r.color }} <br> {{ r.skill }} <br> {{ r.price }}</h5>
+            {# <p class="card-text text-dark"> {{ r.description }} <br><br> </p>  #}
+        </div>
+        <div class="card-body">
+      <a href="{{ url_for('ranger_detail',  item_id=r.id) }}" class="card-link">View Item</a> 
+        </div>  
+    </div>
+   
+    {% endfor %}
+
+</div>
+
+{% endblock %}
