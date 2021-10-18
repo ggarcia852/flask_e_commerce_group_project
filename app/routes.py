@@ -128,13 +128,12 @@ def ranger_detail(item_id):
 @app.route('/ranger_detail/<item_id>/add', methods=['POST'])
 @login_required
 def add_item(item_id):
-    #my_cart = current_user(Cart)
     item = Item.query.get_or_404(item_id)
 
     new_cart = Cart(current_user.id, item_id, item.price)
     db.session.add(new_cart)
     db.session.commit()
-    flash (f'You have succesfully added {item.color} to your cart!', 'success')
+    flash (f'You have successfully added {item.color} to your cart!', 'success')
     return redirect(url_for('cart', item=item))
 
 
@@ -156,35 +155,21 @@ def cart():
 @app.route('/remove_item/<item_id>', methods=['POST'])
 @login_required
 def remove_item(item_id):
-        item_to_remove = Cart.query.get_or_404(item_id)
-    
-        db.session.delete(item_to_remove)
-        db.session.commit()
-        flash('Your item has been removed.', 'success')
-        return redirect(url_for('cart'))
+    item_to_remove = Cart.query.get_or_404(item_id)
 
-
-# @app.route('/remove_all<cart_id>', methods=['POST'])
-# def remove_all(cart_id):
-#     cart_id = Cart.query.filter_by(cart_id=current_user.id)
-#     remove_all = Cart.delete().where(cart_id=current_user.id)
-#     db.session.commit()
-#     flash('Your have removed all itens fron your cart.', 'success')
-#     return redirect(url_for('cart', card_id=cart_id, remove_all=remove_all))
-
-
-
-@app.route('/remove_all<cart_id>', methods=['POST'])
-def remove_all(cart_id):
-    cart_id = Cart.query.filter_by(cart_id=current_user.id).subquery()
-    db.session.delete(cart_id)
+    db.session.delete(item_to_remove)
     db.session.commit()
-
-    # for item in cart:
-    #     db.session.delete(item)
-    #     db.session.commit()
-    flash('Your have removed all itens fron your cart.', 'success')
-    return redirect(url_for('cart'), cart_id=cart_id)
+    flash('Your item has been removed.', 'success')
+    return redirect(url_for('cart'))
 
 
-    
+
+# @app.route('/remove_all/<cart_id>', methods=['POST'])
+# def remove_all(cart_id):
+#     # cart = Cart.query.get_or_404(cart_id=current_user.id)
+#     cart = Cart.query.filter_by(cart_id ) #=current_user.id)
+#     for item in cart:
+#         db.session.delete(item)
+#         db.session.commit()
+#     flash('Your have removed all itens fron your cart.', 'success')
+#     return redirect(url_for('cart'))
