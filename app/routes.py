@@ -141,20 +141,19 @@ def add_item(item_id):
 @app.route('/cart', methods =["GET"] )
 @login_required
 def cart():
+    title = 'My Cart'
     items = Cart.query.filter_by(cart_id=current_user.id)
-   # items = Cart.query.filter_by(cart_id)
-    
-    
-
+ 
     subtotal = 0
     for item in items:
         subtotal += item.price 
     
-    return render_template('cart.html', items=items, subtotal=subtotal)
+    return render_template('cart.html', items=items, subtotal=subtotal, title=title)
 
 
 
 @app.route('/remove_item/<item_id>', methods=['POST'])
+@login_required
 def remove_item(item_id):
         item_to_remove = Cart.query.get_or_404(item_id)
     
@@ -164,12 +163,24 @@ def remove_item(item_id):
         return redirect(url_for('cart'))
 
 
-@app.route('/remove_all', methods=['DELETE'])
-def remove_all():
-    items = Cart.query.filter_by(cart_id=current_user.id)
+# @app.route('/remove_all', methods=['POST'])
+# def remove_all():
+#     my_cart = Cart.query.filter_by(cart_id=current_user.id)
+#     db.session.delete(my_cart)
+#     db.session.commit()
+#     flash('Your have removed all itens fron your cart.', 'success')
+#     return redirect(url_for('cart'), my_cart=my_cart)
 
-    db.session.query(Cart).delete()
+
+
+@app.route('/remove_all/<cart_id>', methods=['POST'])
+def remove_all(cart_id):
+    cart = Cart.query.filter_by(cart_id=current_user.id)
+
+    db.session.delete(cart)
     db.session.commit()
+    flash('Your have removed all itens fron your cart.', 'success')
+    return redirect(url_for('cart'), cart=cart)
 
     # for item in items:
     #     db.session.delete(item)
@@ -177,8 +188,4 @@ def remove_all():
     #     flash ('You have removed all the items from your cart.', 'success')
     #     return redirect(url_for('cart', items=items))
 
-
-# @app.route('/remove_all', methods=['DELETE'])
-# def remove_all():
-#     db.session.query(Cart).delete()
     

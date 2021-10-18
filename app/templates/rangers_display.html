@@ -10,7 +10,7 @@
         
     </div>
 </div>
-
+<br><br>
 
 <div class="row">
     {% for r in rangers %} 
@@ -24,7 +24,11 @@
             </div>
             <div class="card-body">
                
-                <a href="{{ url_for('ranger_detail',  item_id=r.id) }}" class="card-link btn btn-primary">View Item</a> 
+                <a href="{{ url_for('ranger_detail',  item_id=r.id) }}" class="card-link btn btn-outline-primary btn-sm">View Item</a> <br><br>
+                
+                <form action="{{ url_for('add_item', item_id=r.id) }}" method="post">
+                    <input type="submit" class="btn btn-success btn-sm" value="Add Item to Cart">
+                </form>
             </div>      
         </div>
         <br>
