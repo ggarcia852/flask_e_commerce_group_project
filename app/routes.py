@@ -1,3 +1,4 @@
+from os import remove
 from app import app, db
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user ,logout_user, current_user, login_required
@@ -163,29 +164,27 @@ def remove_item(item_id):
         return redirect(url_for('cart'))
 
 
-# @app.route('/remove_all', methods=['POST'])
-# def remove_all():
-#     my_cart = Cart.query.filter_by(cart_id=current_user.id)
-#     db.session.delete(my_cart)
+# @app.route('/remove_all<cart_id>', methods=['POST'])
+# def remove_all(cart_id):
+#     cart_id = Cart.query.filter_by(cart_id=current_user.id)
+#     remove_all = Cart.delete().where(cart_id=current_user.id)
 #     db.session.commit()
 #     flash('Your have removed all itens fron your cart.', 'success')
-#     return redirect(url_for('cart'), my_cart=my_cart)
+#     return redirect(url_for('cart', card_id=cart_id, remove_all=remove_all))
 
 
 
-@app.route('/remove_all/<cart_id>', methods=['POST'])
+@app.route('/remove_all<cart_id>', methods=['POST'])
 def remove_all(cart_id):
-    cart = Cart.query.filter_by(cart_id=current_user.id)
-
-    db.session.delete(cart)
+    cart_id = Cart.query.filter_by(cart_id=current_user.id).subquery()
+    db.session.delete(cart_id)
     db.session.commit()
-    flash('Your have removed all itens fron your cart.', 'success')
-    return redirect(url_for('cart'), cart=cart)
 
-    # for item in items:
+    # for item in cart:
     #     db.session.delete(item)
     #     db.session.commit()
-    #     flash ('You have removed all the items from your cart.', 'success')
-    #     return redirect(url_for('cart', items=items))
+    flash('Your have removed all itens fron your cart.', 'success')
+    return redirect(url_for('cart'), cart_id=cart_id)
+
 
     
